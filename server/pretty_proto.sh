@@ -9,7 +9,7 @@ for FILE in *.proto; do
         exit 9999
     fi
     protoc --proto_path=$DIR --dart_out=$FOLDER $FILE
-    touch "$FOLDER/all.dart"
+    # touch "$FOLDER/all.dart"
     # cat >> "$FOLDER/all.dart" <<EOF
     # export 'foo.pb.dart';
     # export 'foo.pbenum.dart';
