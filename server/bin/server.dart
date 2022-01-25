@@ -10,14 +10,12 @@ class GreeterService extends GreeterServiceBase {
   }
 }
 
-void main() {
-  Future<void> main(List<String> args) async {
-    final server = Server(
-      [GreeterService()],
-      const <Interceptor>[],
-      CodecRegistry(codecs: const [GzipCodec(), IdentityCodec()]),
-    );
-    await server.serve(port: 50051);
-    print('Server listening on port ${server.port}...');
-  }
+void main() async {
+  final server = Server(
+    [GreeterService()],
+    const <Interceptor>[],
+    CodecRegistry(codecs: const [GzipCodec(), IdentityCodec()]),
+  );
+  await server.serve(port: 50051);
+  print('Server listening on port ${server.port}...');
 }
