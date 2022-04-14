@@ -40,8 +40,7 @@ void _snackbar(
         ),
       );
 
-Future<String?> Function() _onPressed(BuildContext context, String name) =>
-    () async {
+VoidCallback _onPressed(BuildContext context, String name) => () async {
       try {
         final reply = await _client.sayHello(
           HelloRequest()..name = name,
