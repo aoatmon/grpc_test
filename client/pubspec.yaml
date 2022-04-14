@@ -12,7 +12,6 @@ dependencies:
   grpc: ^3.0.2
   protos:
     path: protos
-  flutter_hooks: ^0.18.2
 
 dev_dependencies:
   flutter_test:
