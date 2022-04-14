@@ -1,0 +1,14 @@
+name: protos
+description: generated protobuf
+publish_to: none
+
+environment:
+  sdk: '>=2.16.0 <3.0.0'
+  
+dependencies:
+  grpc: ^3.0.2
+  protobuf: ^2.0.1
+
+dev_dependencies:
+  flutter_lints: ^1.0.4
+  

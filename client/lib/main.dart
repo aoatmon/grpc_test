@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:grpc/grpc.dart';
+import 'package:protos/protos.dart';
 
 const _host = 'localhost';
 const _port = 50051;
@@ -39,64 +39,56 @@ void _snackbar(
         ),
       );
 
-VoidCallback _onPressed(BuildContext context, String name) => () async {
-      try {
-        final reply = await _client.sayHello(
-          HelloRequest()..name = name,
-          options: CallOptions(compression: const GzipCodec()),
-        );
-        _snackbar(context, message: reply.message);
-      } catch (e) {
-        _snackbar(context, message: '$e');
-      }
-    };
-void main() => runApp(const Application());
+void main() => runApp(const MaterialApp(home: Home()));
 
-class Application extends HookWidget {
-  const Application({
-    final key = const ValueKey('Application'),
+class Home extends StatefulWidget {
+  const Home({
+    final key = const ValueKey('Home'),
   }) : super(key: key);
 
   @override
-  Widget build(context) {
-    final controller = useTextEditingController()..text = 'world';
-    return MaterialApp(
-      home: Scaffold(
-        body: ScaffoldBody(controller: controller),
-        floatingActionButton: ScaffoldFab(controller: controller),
-      ),
-    );
-  }
+  State<Home> createState() => _HomeState();
 }
 
-class ScaffoldBody extends StatelessWidget {
-  final TextEditingController controller;
-  const ScaffoldBody({
-    required this.controller,
-    final key = const ValueKey('ScaffoldBody'),
-  }) : super(key: key);
+class _HomeState extends State<Home> {
+  late final TextEditingController _controller;
 
   @override
-  Widget build(context) {
-    return Center(
-      child: TextField(
-        controller: controller,
-      ),
-    );
+  void initState() {
+    _controller = TextEditingController()..text = 'world';
+    super.initState();
   }
-}
-
-class ScaffoldFab extends StatelessWidget {
-  final TextEditingController controller;
-
-  const ScaffoldFab({
-    required this.controller,
-    final key = const ValueKey('ScaffoldFab'),
-  }) : super(key: key);
 
   @override
-  Widget build(context) => FloatingActionButton(
-        onPressed: _onPressed(context, controller.text),
-        child: const Icon(Icons.forward),
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  void _onPressed(BuildContext context) async {
+    try {
+      final reply = await _client.sayHello(
+        HelloRequest()..name = _controller.text,
+        options: CallOptions(compression: const GzipCodec()),
       );
+      _snackbar(context, message: reply.message);
+    } catch (e) {
+      _snackbar(context, message: '$e');
+    }
+  }
+
+  @override
+  Widget build(context) {
+    return Scaffold(
+      body: Center(
+        child: TextField(controller: _controller),
+      ),
+      floatingActionButton: Builder(
+        builder: (context) => FloatingActionButton(
+          onPressed: () => _onPressed(context),
+          child: const Icon(Icons.forward),
+        ),
+      ),
+    );
+  }
 }

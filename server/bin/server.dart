@@ -1,11 +1,12 @@
 // source `https://github.com/grpc/grpc-dart/blob/master/example/helloworld/bin/server.dart`
 
 import 'package:grpc/grpc.dart';
-import '../protos/all.dart';
+import 'package:protos/protos.dart';
 
 class GreeterService extends GreeterServiceBase {
   @override
   Future<HelloReply> sayHello(ServiceCall call, HelloRequest request) async {
+    print(request.name);
     return HelloReply()..message = 'Hello, ${request.name}!';
   }
 }
